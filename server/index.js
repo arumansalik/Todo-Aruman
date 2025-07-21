@@ -25,4 +25,25 @@ app.post("/signup",async function(req, res) {
     });
 }); 
 
+app.post("/signin", async function(req, res) {
+    const {email, password} = req.body;
+    const user = await User.findOne({
+        email,
+        password 
+    });
+
+    if(!user) {
+        res.status(403).json({
+            message: "Invalid credintials"
+        });
+    }
+
+    const token = jwt.sign({
+        id: user._id
+    }, JWT_SECRET);
+    res.json({
+        token: token
+    });
+})
+
 app.listen(3000);
