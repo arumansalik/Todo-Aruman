@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const {default: mongoose} = require("mongoose");
+const {auth} = require('./middlewares/auth');
 
 const User = require("./model/Users");
 const Todo = require("./model/Todo");
@@ -44,17 +45,21 @@ app.post("/signin", async function(req, res) {
     res.json({
         token: token
     });
-})
+});
 
 app.post("/todos", auth, async function(req, res) {
-    const title = req.body;
+    const {title} = req.body;
     const todo = await Todo.create({
         title,
         completed: false,
         userId: req.userId
     });
     res.json(todo);
-})
+});
 
+app.get("/todos", auth, async function(req, res) {
+    const todos = await Todo.find({ userId: req.userId });
+    res.json(todos);
+});
 
 app.listen(3000);
