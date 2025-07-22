@@ -46,6 +46,15 @@ app.post("/signin", async function(req, res) {
     });
 })
 
+app.post("/todos", auth, async function(req, res) {
+    const title = req.body;
+    const todo = await Todo.create({
+        title,
+        completed: false,
+        userId: req.userId
+    });
+    res.json(todo);
+})
 
 
 app.listen(3000);
