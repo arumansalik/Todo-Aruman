@@ -62,11 +62,17 @@ app.get("/todos", auth, async function(req, res) {
     res.json(todos);
 });
 
-app.put("/todos/:id", auth,async function(req, res) {
+app.put("/todos/:id", auth, async function(req, res) {
     const id = req.params.id;
     const { title, completed} = req.body;
     await Todo.findByIdAndUpdate(id, {title, completed}, {new: true});
     res.json({message : "Todo Updated"});
+});
+
+app.delete("/todos/:id", auth, async function(req, res) {
+    const id = req.params.id;
+    await Todo.findByIdAndDelete(id);
+    res.json({message : "Todo Deleted"});
 })
 
 app.listen(3000);
