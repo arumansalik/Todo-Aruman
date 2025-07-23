@@ -72,7 +72,9 @@ app.put("/todos/:id", auth, async function(req, res) {
 app.delete("/todos/:id", auth, async function(req, res) {
     const id = req.params.id;
     await Todo.findByIdAndDelete(id);
-    res.json({message : "Todo Deleted"});
+    res.json({
+        message: "Todo Deleted"
+    })
 })
 
 app.listen(3000);
